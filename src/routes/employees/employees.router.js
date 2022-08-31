@@ -9,9 +9,9 @@ const {
 	deleteEmployee,
 } = require('./employees.controller')
 
-router.get('/', [isAuthenticated, isSuperAdmin], getEmployees)
+router.get('/', isAuthenticated, getEmployees)
 router.post('/', isAuthenticated, addEmployees)
-router.put('/:id', isAuthenticated, updateEmployee)
-router.delete('/:id', isAuthenticated, deleteEmployee)
+router.put('/:id', [isAuthenticated, isSuperAdmin], updateEmployee)
+router.delete('/:id', [isAuthenticated, isSuperAdmin], deleteEmployee)
 
 module.exports = router

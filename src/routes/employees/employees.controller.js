@@ -6,23 +6,27 @@ const getEmployees = async (req, res) => {
 	res.json(employees)
 }
 const addEmployees = async (req, res) => {
-	const data = fs.readFileSync('./res/FCT-EMP-LIST.csv')
-	const parsed = await new Promise((resolve, reject) => {
-		csv.parse(data, function (err, data) {
-			resolve(data)
+	try {
+		const data = fs.readFileSync('./res/FCT-EMP-LIST.csv')
+		const parsed = await new Promise((resolve, reject) => {
+			csv.parse(data, function (err, data) {
+				resolve(data)
+			})
 		})
-	})
-	parsed.shift()
+		parsed.shift()
 
-	const inserted = await employeeService.addEmployees(
-		parsed.map((e) => ({
-			employeeName: e[0],
-			email: e[1],
-			dateOfJoin: e[2],
-			password: e[3],
-		}))
-	)
-	res.send(inserted)
+		const inserted = await employeeService.addEmployees(
+			parsed.map((e) => ({
+				employeeName: e[0],
+				email: e[1],
+				dateOfJoin: e[2],
+				password: e[3],
+			}))
+		)
+		res.status(200).send(inserted)
+	} catch (error) {
+		res.status(500).json({ error })
+	}
 }
 
 const updateEmployee = async (req, res) => {

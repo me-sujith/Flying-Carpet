@@ -8,6 +8,7 @@ const employeeSchema = mongoose.Schema({
 	email: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	dateOfJoin: {
 		type: Date,
